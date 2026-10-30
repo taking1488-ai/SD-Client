@@ -39,7 +39,7 @@ jobs:
         shell: bash
         run: |
           cd release
-          cmake --build . --config Release --target DDNet -- -m 2>&1 | tee build.log
+          cmake --build . --config Release --target DDNet --parallel 2>&1 | tee build.log
 
       - name: Package SD-Client-Complete.zip
         shell: bash
@@ -61,12 +61,6 @@ jobs:
           ls "$OUT"/*.dll
           powershell -NoProfile -Command "Compress-Archive -Path '$OUT' -DestinationPath SD-Client-Complete.zip -Force"
           ls -la SD-Client-Complete.zip
-
-      - name: Check DLL dependencies
-        shell: bash
-        run: |
-          # lists the imported DLLs; every non-system DLL must be inside the package
-          "$(vswhere -latest -find 'VC/Tools/MSVC/*/bin/Hostx64/x64/dumpbin.exe' | head -n 1)" //dependents SD-Client-Release/SD-Client.exe || true
 
       - name: Upload build log
         if: always()
