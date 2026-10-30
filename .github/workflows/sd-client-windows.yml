@@ -39,7 +39,7 @@ jobs:
         shell: bash
         run: |
           cd release
-          cmake --build . --config Release --target DDNet -- /m 2>&1 | tee build.log
+          cmake --build . --config Release --target DDNet -- -m 2>&1 | tee build.log
 
       - name: Package SD-Client-Complete.zip
         shell: bash
