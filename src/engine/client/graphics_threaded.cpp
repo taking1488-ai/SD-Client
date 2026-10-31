@@ -2558,6 +2558,31 @@ void CGraphics_Threaded::GotResized(int w, int h, int RefreshRate)
 		return;
 #endif
 
+	// SD-Client: some systems emit repeated SIZE_CHANGED events with identical values (e.g. after the
+	// keyboard layout was switched). Re-applying an unchanged size updates the viewport and waits for the GPU
+	// every time, which shows up as flicker and FPS drops. Skip events which change nothing.
+	{
+		static int s_NumEvents = 0;
+		static int s_NumSkipped = 0;
+		bool Unchanged = false;
+		if(RefreshRate == -1)
+		{
+			int ViewW = 0, ViewH = 0;
+			m_pBackend->GetViewportSize(ViewW, ViewH);
+			Unchanged = w == g_Config.m_GfxScreenWidth && h == g_Config.m_GfxScreenHeight && ViewW == m_DrawableWidth && ViewH == m_DrawableHeight;
+		}
+		if(s_NumEvents < 60)
+		{
+			s_NumEvents++;
+			log_info("sd-client", "window size event %dx%d unchanged=%d (skipped so far: %d)", w, h, Unchanged ? 1 : 0, s_NumSkipped);
+		}
+		if(Unchanged && g_Config.m_SdIgnoreDupResize)
+		{
+			s_NumSkipped++;
+			return;
+		}
+	}
+
 	// if RefreshRate is -1 use the current config refresh rate
 	if(RefreshRate == -1)
 		RefreshRate = g_Config.m_GfxScreenRefreshRate;

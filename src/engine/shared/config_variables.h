@@ -870,3 +870,4 @@ MACRO_CONFIG_COL(SdGrColor, sd_gr_color, 0x2BFF80, CFGFLAG_CLIENT | CFGFLAG_SAVE
 MACRO_CONFIG_INT(SdGrAlpha, sd_gr_alpha, 70, 5, 100, CFGFLAG_CLIENT | CFGFLAG_SAVE, "Grenade trajectory opacity in percent")
 MACRO_CONFIG_INT(SdGrWidth, sd_gr_width, 2, 1, 12, CFGFLAG_CLIENT | CFGFLAG_SAVE, "Grenade trajectory line thickness in world units")
 MACRO_CONFIG_INT(SdGrMarker, sd_gr_marker, 1, 0, 1, CFGFLAG_CLIENT | CFGFLAG_SAVE, "Draw a marker at the predicted impact point")
+MACRO_CONFIG_INT(SdIgnoreDupResize, sd_ignore_dup_resize, 1, 0, 1, CFGFLAG_CLIENT | CFGFLAG_SAVE, "Ignore window size events which do not change the size (prevents flicker after keyboard layout switches)")

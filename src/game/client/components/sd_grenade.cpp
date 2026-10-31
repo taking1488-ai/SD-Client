@@ -19,7 +19,11 @@ bool CSdGrenade::Simulate(vec2 Start, vec2 Direction)
 {
 	m_vPoints.clear();
 
-	const CTuningParams &Tuning = GameClient()->m_aTuning[g_Config.m_ClDummy];
+	// The grenade uses the tuning of the tune zone the shooter is standing in (zone 0 = global tuning).
+	int TuneZone = 0;
+	if(GameClient()->m_GameWorld.m_WorldConfig.m_UseTuneZones && GameClient()->m_aLocalTuneZone[g_Config.m_ClDummy] > 0)
+		TuneZone = GameClient()->m_aLocalTuneZone[g_Config.m_ClDummy];
+	const CTuningParams &Tuning = *GameClient()->GetTuning(TuneZone);
 	const float Curvature = Tuning.m_GrenadeCurvature;
 	const float Speed = Tuning.m_GrenadeSpeed;
 	const int TickSpeed = Client()->GameTickSpeed();

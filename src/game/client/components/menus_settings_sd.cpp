@@ -66,7 +66,7 @@ void CMenus::RenderSettingsSd(CUIRect MainView)
 	MainView.HSplitBottom(24.0f, &Content, &BottomBar);
 	Content.HSplitBottom(6.0f, &Content, nullptr);
 
-	const float TabWidth = TabBar.w / NUM_PAGES;
+	const float TabWidth = TabBar.w / (float)NUM_PAGES;
 	for(int i = 0; i < NUM_PAGES; ++i)
 	{
 		TabBar.VSplitLeft(TabWidth, &Button, &TabBar);
